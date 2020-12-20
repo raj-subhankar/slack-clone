@@ -2,12 +2,18 @@ import { Button } from '@material-ui/core'
 import React from 'react'
 import './Login.css'
 import { auth, provider } from './firebase'
+import { useStateValue } from './StateProvider'
+import { actionTypes } from './reducer'
 
 function Login() {
-    const singIn = (e) =>{
+    const [state, dispatch] = useStateValue();
+    const signIn = (e) =>{
         auth.signInWithPopup(provider)
         .then(result => {
-
+            dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user
+            })
         })
         .catch(error => {
             alert(error.message)
@@ -19,7 +25,7 @@ function Login() {
                 <img src="https://cdn.mos.cms.futurecdn.net/SDDw7CnuoUGax6x9mTo7dd.jpg"/>
                 <h1>Sign in</h1>
                 <p>slack.com</p>
-                <Button>Sign In with Google</Button>
+                <Button onClick={signIn}>Sign In with Google</Button>
             </div>
            
         </div>
